@@ -112,12 +112,17 @@ public class Chatbot {
     }
 
     private ChatContinue markDone(String args) {
-        System.out.println(args);
-        Task targetTask = new Task(args);
-        Task task = memory.stream().filter(t -> t.equals(targetTask)).findAny().get();
-        task.markDone();
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  " + task);
+        try {
+            int index = Integer.parseInt(args);
+            Task task = memory.get(index - 1);
+            task.markDone();
+            System.out.println("Nice! I've marked this task as done:");
+            System.out.println("  " + task);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Sorry, that item does not exist!");
+        } catch (NumberFormatException e) {
+            System.out.println("The index is invalid");
+        }
         return ChatContinue.CONTINUE;
     }
 }
